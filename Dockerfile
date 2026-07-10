@@ -22,6 +22,7 @@ COPY --chown=builduser:buildgroup . .
 USER builduser
 
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV CI=true
 
 # Build-time env vars needed for Next.js prerendering
 ARG NEXT_PUBLIC_KEYGEN_API_URL=https://api.keygen.sh/v1
