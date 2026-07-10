@@ -1,25 +1,18 @@
-# Stage 1: Dependencies
-FROM node:22-alpine AS deps
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
-
-RUN corepack enable pnpm
-
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile
-
-# Stage 2: Build
+# Stage 1: Build
 FROM node:22-alpine AS builder
 WORKDIR /app
 
+RUN apk add --no-cache libc6-compat
 RUN corepack enable pnpm
 RUN addgroup --system --gid 1001 buildgroup && adduser --system --uid 1001 builduser
 RUN chown builduser:buildgroup /app
 
-COPY --from=deps /app/node_modules ./node_modules
-COPY --chown=builduser:buildgroup . .
+COPY --chown=builduser:buildgroup package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 USER builduser
+RUN pnpm install --frozen-lockfile
+
+COPY --chown=builduser:buildgroup . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV CI=true
@@ -34,7 +27,7 @@ ENV NEXT_PUBLIC_KEYGEN_ACCOUNT_ID=$NEXT_PUBLIC_KEYGEN_ACCOUNT_ID
 
 RUN pnpm build
 
-# Stage 3: Production
+# Stage 2: Production
 FROM node:22-alpine AS runner
 WORKDIR /app
 
