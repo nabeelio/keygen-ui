@@ -36,6 +36,7 @@ jobs:
           build-args: |
             NEXT_PUBLIC_KEYGEN_API_URL=${{ secrets.NEXT_PUBLIC_KEYGEN_API_URL }}
             NEXT_PUBLIC_KEYGEN_SINGLEPLAYER=${{ secrets.NEXT_PUBLIC_KEYGEN_SINGLEPLAYER }}
+            NEXT_PUBLIC_KEYGEN_ACCOUNT_ID=${{ secrets.NEXT_PUBLIC_KEYGEN_ACCOUNT_ID }}
           tags: |
             ${{ secrets.REGISTRY_URL }}/vacentral/keygen-ui:latest
             ${{ secrets.REGISTRY_URL }}/vacentral/keygen-ui:sha-${{ github.sha }}
