@@ -5,6 +5,9 @@ on:
     branches: [main, nabeel-changes]
     tags: ["v*"]
 
+env:
+  CI: true
+
 concurrency:
   group: publish-${{ github.ref }}
   cancel-in-progress: true
